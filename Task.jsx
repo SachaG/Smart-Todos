@@ -5,17 +5,26 @@ Task = React.createClass({
     showPrivateButton: React.PropTypes.bool.isRequired
   },
 
+  mixins: [ReactMeteorData],
+
+  getMeteorData() {
+
+    return {
+      owner: Meteor.users.findOne(this.props.task.owner) 
+    };
+  },
+
   toggleChecked() {
     // Set the checked property to the opposite of its current value
-    Meteor.call("setChecked", this.props.task._id, ! this.props.task.checked);
+    Meteor.call("tasks.edit", this.props.task._id, {$set: {checked: !this.props.task.checked}});
   },
 
   deleteThisTask() {
-    Meteor.call("removeTask", this.props.task._id);
+    Meteor.call("tasks.delete", this.props.task._id);
   },
 
   togglePrivate() {
-    Meteor.call("setPrivate", this.props.task._id, ! this.props.task.private);
+    Meteor.call("tasks.edit", this.props.task._id, {$set: {private: !this.props.task.private}});
   },
 
   render() {
@@ -44,7 +53,7 @@ Task = React.createClass({
         ) : ''}
 
         <span className="text">
-          <strong>{this.props.task.username}</strong>: {this.props.task.text}
+          <strong>{this.data.owner.username}</strong>: {this.props.task.text}
         </span>
       </li>
     );

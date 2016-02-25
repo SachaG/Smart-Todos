@@ -8,3 +8,9 @@ meteor-platform
 react
 accounts-ui
 accounts-password
+
+aldeed:simple-schema
+aldeed:collection2
+
+utilities:smart-publications
+utilities:smart-methods
